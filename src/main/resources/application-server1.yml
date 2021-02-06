@@ -8,12 +8,14 @@ eureka:
     service-url:
       defaultZone: http://eureka-7901:7901/eureka/
   instance:
+    # hostname是用来查找主机的
     hostname: eureka-7900
     prefer-ip-address: false
 
 server:
   port: 7900
 
+#application name 的是一样的。通过服务名去标志分组寻找服务的 eureka.instance.appname和下面的效果是一样的
 spring:
   application:
     name: Eureka
