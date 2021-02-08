@@ -107,4 +107,16 @@ public class MainController {
 		}
 		return "ERROR";
 	}
+
+	@GetMapping("/helloFromClient4")
+	public String helloFromClient4(){
+		String baseUrl = "http://192.168.1.102:82";
+		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
+		factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setUriTemplateHandler(factory);
+//				ResponseEntity<String> entity = restTemplate.getForEntity("/hello", String.class);
+//				return entity.getBody();
+		return restTemplate.getForObject("/hello", String.class);
+	}
 }

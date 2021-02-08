@@ -6,6 +6,9 @@ eureka:
     #设置服务注册中心的URL，用于client和server端交流. 设定向哪里注册，可以写多个地址，只有这里是别的机器的地址
     service-url:
       defaultZone: http://eureka-7900:7900/eureka/,http://eureka-7901:7901/eureka/
+    # 在client开启上报服务的真实健康状态，是靠health端点上报的
+    healthcheck:
+      enabled: true
   instance:
     metadata-map:
       dalao: lisz_hahaha
@@ -30,7 +33,7 @@ management:
   # "logback.events","process.cpu.usage","process.files.max","process.files.open","process.start.time","process.uptime",
   # "system.cpu.count","system.cpu.usage","system.load.average.1m","tomcat.sessions.active.current",
   # "tomcat.sessions.active.max","tomcat.sessions.alive.max","tomcat.sessions.created","tomcat.sessions.expired","tomcat.sessions.rejected"]}
-  # 中的某个参数名就行（REST）
+  # 中的某个参数名就行（REST）健康信息是通过actuator节点上报的
   # 方便了运维
   endpoint:
     shutdown:
