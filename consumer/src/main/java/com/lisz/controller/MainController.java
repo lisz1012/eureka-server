@@ -5,6 +5,7 @@ import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.netflix.eureka.EurekaServiceInstance;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,14 @@ public class MainController {
 	@Autowired
 	private DiscoveryClient discoveryClient;
 
+	// Springboot 2.2.0之后似乎用org.springframework.cloud.loadbalancer.blocking.client.BlockingLoadBalancerClient
+	// 替换了ribbon，其所在包的spring.factories里面有
+	// org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientAutoConfiguration,\这一项
 	@Autowired
 	private EurekaClient eurekaClient;
+
+	@Autowired
+	private LoadBalancerClient loadBalancerClient;
 
 	@GetMapping("/hi")
 	public String hi(){
@@ -80,6 +87,23 @@ public class MainController {
 //				return entity.getBody();
 				return restTemplate.getForObject("/hello", String.class);
 			}
+		}
+		return "ERROR";
+	}
+
+	@GetMapping("/helloFormClient3")
+	public String helloFormClient3(){
+		// 客户端的负载均衡，choose里面有负载均衡的策略。启动两个provider的程序之后会交替访问不同的机器
+		ServiceInstance provider = loadBalancerClient.choose("provider");
+		System.out.println(loadBalancerClient.getClass().getName());
+		if (provider != null) {
+			String host = provider.getHost();
+			int port = provider.getPort();
+			String url = "http://" + host + ":" + port + "/hello";
+			RestTemplate restTemplate = new RestTemplate();
+//				ResponseEntity<String> entity = restTemplate.getForEntity("/hello", String.class);
+//				return entity.getBody();
+			return restTemplate.getForObject(url, String.class) + " from: " + url;
 		}
 		return "ERROR";
 	}

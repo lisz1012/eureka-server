@@ -14,3 +14,24 @@ server:
 spring:
   application:
     name: provider
+#开启所有actuator监控的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  # 可以把注册列表中本节点的status由UP设置为DOWN，就可以远程关闭当前微服务节点了
+  # 关闭的时候要向某一台机器（：端口）发送一个POST请求：http://192.168.1.102:82/actuator/shutdown
+  # 查看jvm情况：http://192.168.1.102/actuator/metrics/jvm.gc.max.data.size
+  # 最后一个/ 后面加上{"names":["http.server.requests","jvm.buffer.count","jvm.buffer.memory.used",
+  # "jvm.buffer.total.capacity","jvm.classes.loaded","jvm.classes.unloaded","jvm.gc.live.data.size",
+  # "jvm.gc.max.data.size","jvm.gc.memory.allocated","jvm.gc.memory.promoted","jvm.gc.pause","jvm.memory.committed",
+  # "jvm.memory.max","jvm.memory.used","jvm.threads.daemon","jvm.threads.live","jvm.threads.peak","jvm.threads.states",
+  # "logback.events","process.cpu.usage","process.files.max","process.files.open","process.start.time","process.uptime",
+  # "system.cpu.count","system.cpu.usage","system.load.average.1m","tomcat.sessions.active.current",
+  # "tomcat.sessions.active.max","tomcat.sessions.alive.max","tomcat.sessions.created","tomcat.sessions.expired","tomcat.sessions.rejected"]}
+  # 中的某个参数名就行（REST）
+  # 方便了运维
+  endpoint:
+    shutdown:
+      enabled: true
