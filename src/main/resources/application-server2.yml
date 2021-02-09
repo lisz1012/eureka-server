@@ -6,7 +6,7 @@ eureka:
     fetch-registry: true
 #设置服务注册中心的URL，用于client和server端交流
     service-url:
-      defaultZone: http://eureka-7900:7900/eureka/
+      defaultZone: http://lisz:123@eureka-7900:7900/eureka/
   instance:
     hostname: eureka-7901
     prefer-ip-address: false

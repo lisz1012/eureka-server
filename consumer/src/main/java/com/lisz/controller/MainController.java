@@ -7,7 +7,6 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.netflix.eureka.EurekaServiceInstance;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -91,10 +90,30 @@ public class MainController {
 		return "ERROR";
 	}
 
-	@GetMapping("/helloFormClient3")
+	@GetMapping("/helloFromClient3")
 	public String helloFormClient3(){
+
 		// 客户端的负载均衡，choose里面有负载均衡的策略。启动两个provider的程序之后会交替访问不同的机器
 		ServiceInstance provider = loadBalancerClient.choose("provider");
+
+		/* 引入Ribbon依赖的话loadBalancerClient就是org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient
+		 但这会使得 loadBalancerClient 拿到的provider为null，导致无法调用服务端
+
+		 在 spring-cloud-netflix-ribbon:2.2.6.RELEASE 里的spring.factories文件里写了：
+		 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+		 org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration
+
+		 而在RibbonAutoConfiguration里面写了：
+		    @Bean
+			@ConditionalOnMissingBean(LoadBalancerClient.class)
+			public LoadBalancerClient loadBalancerClient() {
+				return new RibbonLoadBalancerClient(springClientFactory());
+			}
+		 返回了RibbonLoadBalancerClient
+
+		 而不引入Ribbon依赖的话，loadBalancerClient的实现类是：
+		 org.springframework.cloud.loadbalancer.blocking.client.BlockingLoadBalancerClient
+		 */
 		System.out.println(loadBalancerClient.getClass().getName());
 		if (provider != null) {
 			String host = provider.getHost();

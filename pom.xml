@@ -33,6 +33,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- 只添加这个依赖，就会再打开Eurreka监控页面的时候要求输入账号和密码，还要在Eureka Server的配置文件里面配置才行:
+		 spring.security.user.name=lisz
+		 spring.security.user.password=123
+		 在所有的（多节点的Eureka Server、provider、consumer）yml文件的defaultZone里还要配置：
+		 defaultZone: http://lisz:123@eureka-7900:7900/eureka/,http://lisz:123$eureka-7901:7901/eureka/
+		 在Eureka Server的项目这里还要写一个 com.lisz.config.WebSecurityConfig 类
+		 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

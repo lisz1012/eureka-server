@@ -6,7 +6,7 @@ eureka:
     fetch-registry: true
 #设置服务注册中心的URL，用于client和server端交流. 设定向哪里注册，可以写多个地址，只有这里是别的机器的地址
     service-url:
-      defaultZone: http://eureka-7901:7901/eureka/
+      defaultZone: http://lisz:123@eureka-7901:7901/eureka/
   instance:
     # hostname是用来查找主机的
     hostname: eureka-7900
