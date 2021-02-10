@@ -7,3 +7,8 @@ server:
 spring:
   application:
     name: consumer
+# ribbon脱离Eureka，但是在这个版本的SpringCloud里无效，因为本来就没有Ribbon
+#ribbon:
+#  eureka:
+#    enabled: false
+#  listOfServers: localhost:80

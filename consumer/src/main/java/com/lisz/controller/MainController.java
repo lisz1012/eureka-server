@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import javax.ws.rs.GET;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class MainController {
 	@Autowired
 	private DiscoveryClient discoveryClient;
+	private static final Random RANDOM = new Random();
 
 	// Springboot 2.2.0之后似乎用org.springframework.cloud.loadbalancer.blocking.client.BlockingLoadBalancerClient
 	// 替换了ribbon，其所在包的spring.factories里面有
@@ -28,6 +31,9 @@ public class MainController {
 
 	@Autowired
 	private LoadBalancerClient loadBalancerClient;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@GetMapping("/hi")
 	public String hi(){
@@ -80,7 +86,6 @@ public class MainController {
 				String baseUrl = "http://" + host + ":" + port;
 				DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
 				factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
-				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.setUriTemplateHandler(factory);
 //				ResponseEntity<String> entity = restTemplate.getForEntity("/hello", String.class);
 //				return entity.getBody();
@@ -113,13 +118,15 @@ public class MainController {
 
 		 而不引入Ribbon依赖的话，loadBalancerClient的实现类是：
 		 org.springframework.cloud.loadbalancer.blocking.client.BlockingLoadBalancerClient
+
+		 按理说是Ribbon和Eureka的 Client一起做到的负载均衡：Eureka Client负责向Eureka Server拉取服务列表，Ribbon再根据此列表，
+		 负载均衡地 choose server
 		 */
 		System.out.println(loadBalancerClient.getClass().getName());
 		if (provider != null) {
 			String host = provider.getHost();
 			int port = provider.getPort();
 			String url = "http://" + host + ":" + port + "/hello";
-			RestTemplate restTemplate = new RestTemplate();
 //				ResponseEntity<String> entity = restTemplate.getForEntity("/hello", String.class);
 //				return entity.getBody();
 			return restTemplate.getForObject(url, String.class) + " from: " + url;
@@ -132,10 +139,29 @@ public class MainController {
 		String baseUrl = "http://192.168.1.102:82";
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
 		factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
-		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setUriTemplateHandler(factory);
 //				ResponseEntity<String> entity = restTemplate.getForEntity("/hello", String.class);
 //				return entity.getBody();
 		return restTemplate.getForObject("/hello", String.class);
+	}
+
+	//自定义负载均衡策略（轮询）
+	@GetMapping("/helloFromClient5")
+	public String helloFromClient5(){
+		List<ServiceInstance> provider = discoveryClient.getInstances("provider");
+		int index = RANDOM.nextInt(provider.size());
+		ServiceInstance serviceInstance = provider.get(index);
+		String scheme = serviceInstance.getScheme();
+		String host = serviceInstance.getHost();
+		int port = serviceInstance.getPort();
+		String url = scheme + "://" + host + ":" + port + "/hello";
+		return restTemplate.getForObject(url, String.class);
+	}
+
+	// 自动处理URL，运用LB，调用其LB算法，找到instance，发起http请求。默认轮询
+	@GetMapping("/helloFromClient6")
+	public String helloFromClient6(){
+		String url = "http://provider/hello"; //端口号也不要写
+		return restTemplate.getForObject(url, String.class);
 	}
 }
