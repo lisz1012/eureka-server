@@ -161,7 +161,7 @@ public class MainController {
 	// 自动处理URL，运用LB，调用其LB算法，找到instance，发起http请求。默认轮询
 	@GetMapping("/helloFromClient6")
 	public String helloFromClient6(){
-		String url = "http://provider/hello"; //端口号也不要写
+		String url = "http://provider/hello"; //provider是服务名，端口号不要写，要在restTemplate的@Bean生成的时候同时标注@LoadBalanced
 		return restTemplate.getForObject(url, String.class);
 	}
 }

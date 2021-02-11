@@ -6,7 +6,7 @@ eureka:
     #设置服务注册中心的URL，用于client和server端交流. 设定向哪里注册，可以写多个地址，只有这里是别的机器的地址
     service-url:
       defaultZone: http://lisz:123@eureka-7900:7900/eureka/,http://lisz:123$eureka-7901:7901/eureka/
-    # 在client开启上报服务的真实健康状态，是靠health端点上报的
+    # 在client开启上报服务的真实健康状态，是靠health端点上报的。要在依赖中引入Actuator，HealthStatusService类用到了这个设置
     healthcheck:
       enabled: true
   instance:

@@ -4,7 +4,7 @@ eureka:
     register-with-eureka: true
 #是否从Eureka Server获取注册信息，由于是单节点，不需要同步其他节点数据，false
     fetch-registry: true
-#设置服务注册中心的URL，用于client和server端交流. 设定向哪里注册，可以写多个地址，只有这里是别的机器的地址
+#设置服务注册中心的URL，用于client和server端交流. 设定向哪里注册，可以写多个地址，只有这里是别的机器的地址。要在hosts文件中配置eureka-7901
     service-url:
       defaultZone: http://lisz:123@eureka-7901:7901/eureka/
   instance:
