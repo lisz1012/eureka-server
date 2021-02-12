@@ -270,6 +270,13 @@ public class MainController {
 		return restTemplate.postForObject(url, requestEntity, Person.class);
 	}
 
+	@GetMapping("/postPersonForPerson")
+	public Object postPersonForPerson() {
+		Person person = new Person(3,"zhangsan", null);
+		String url = "http://provider/postPerson3"; //provider的postPerson3这个Controller里面要接受Person，且其前面要有@RequestBody注解
+		return restTemplate.postForObject(url, person, Person.class);
+	}
+
 	// 用restTemplate.postForLocation 发Post请求，得到URI 然后跳转，需要HttpServletResponse
 	@GetMapping("/helloFromClient18")
 	public void helloFromClient18(HttpServletResponse response) throws Exception {

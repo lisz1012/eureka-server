@@ -61,6 +61,12 @@ public class MainController {
 		return person;
 	}
 
+	@PostMapping("/postPerson3")
+	public Person postPerson3(@RequestBody Person person){
+		Address address = new Address("WA", "Seattle", "Westlake");
+		return new Person(1, person.getName(), address);
+	}
+
 	@PostMapping("/postLocation")
 	public URI postLocation(@RequestBody Person person, HttpServletResponse response) throws Exception{
 		URI uri = new URI("https://baidu.com/s?wd=" + person.getName());
