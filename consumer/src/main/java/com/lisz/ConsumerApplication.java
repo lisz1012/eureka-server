@@ -1,5 +1,6 @@
 package com.lisz;
 
+import com.lisz.interceptor.LoggingClientHttpRequestInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -14,8 +15,10 @@ public class ConsumerApplication {
 	}
 
 	@Bean
-	@LoadBalanced
+	@LoadBalanced //客户端的负载均衡，所以这个注解写在了客户端
 	RestTemplate restTemplate(){
-		return new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getInterceptors().add(new LoggingClientHttpRequestInterceptor());
+		return restTemplate;
 	}
 }

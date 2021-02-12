@@ -1,5 +1,6 @@
 package com.lisz.controller;
 
+import com.lisz.entity.Person;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,20 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.netflix.eureka.EurekaServiceInstance;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import javax.ws.rs.GET;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.time.Period;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @RestController
@@ -163,5 +170,124 @@ public class MainController {
 	public String helloFromClient6(){
 		String url = "http://provider/hello"; //provider是服务名，端口号不要写，要在restTemplate的@Bean生成的时候同时标注@LoadBalanced
 		return restTemplate.getForObject(url, String.class);
+	}
+
+	// 返回ResponseEntity
+	@GetMapping("/helloFromClient7")
+	public ResponseEntity<String> helloFromClient7(){
+		String url = "http://provider/hello"; //provider是服务名，端口号不要写，要在restTemplate的@Bean生成的时候同时标注@LoadBalanced
+		ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
+		System.out.println(entity);
+
+		return entity;
+	}
+
+	@GetMapping("/helloFromClient8")
+	public ResponseEntity<Map> helloFromClient8(){
+		String url = "http://provider/getMap";
+		ResponseEntity<Map> entity = restTemplate.getForEntity(url, Map.class);
+		System.out.println(entity);
+		return entity;
+	}
+
+	@GetMapping("/helloFromClient9")
+	public Map<String, String> helloFromClient9(){
+		String url = "http://provider/getMap";
+		Map<String, String> map = restTemplate.getForObject(url, Map.class);
+		System.out.println(map);
+		return map;
+	}
+
+	@GetMapping("/helloFromClient10")
+	public Object helloFromClient10(){
+		String url = "http://provider/getPerson";
+		// 直接返回给前端那还好，如果需要处理Person的数据，则还需要拷贝Person类过来
+		return restTemplate.getForObject(url, Object.class);
+	}
+
+	@GetMapping("/helloFromClient11")
+	public Person helloFromClient11() {
+		String url = "http://provider/getPerson";
+		return restTemplate.getForObject(url, Person.class);
+	}
+
+	// Url 直接传参数
+	@GetMapping("/helloFromClient12")
+	public Person helloFromClient12() {
+		String url = "http://provider/getPerson2?name=hahaha";
+		return restTemplate.getForObject(url, Person.class);
+	}
+
+	@GetMapping("/helloFromClient13")
+	public Person helloFromClient13() {
+		String url = "http://provider/getPerson2?name={1}";
+		return restTemplate.getForObject(url, Person.class, "hahahaha");
+	}
+
+	@GetMapping("/helloFromClient14")
+	public Person helloFromClient14() {
+		Map<String, String> map = new HashMap<>();
+		map.put("name1", "hahahahahahahahaha");
+		String url = "http://provider/getPerson2?name={name1}";
+		return restTemplate.getForObject(url, Person.class, map);
+	}
+
+	@GetMapping("/helloFromClient15")
+	public Person helloFromClient15() {
+		Map<String, String> map = new HashMap<>();
+		map.put("name2", "posted Hahaha");
+		String url = "http://provider/postPerson2?name={name2}";
+		return restTemplate.postForObject(url, null, Person.class, map);
+	}
+
+	// 用restTemplate.postForEntity发Post请求
+	@GetMapping("/helloFromClient16")
+	public ResponseEntity<Person> helloFromClient16() {
+		// Header没必要
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+		map.add("name", "posted Hahahahahahahaha - 16");
+		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, null);
+
+		String url = "http://provider/postPerson2";
+		return restTemplate.postForEntity(url, requestEntity, Person.class);
+	}
+
+	// 用restTemplate.postForObject发Post请求
+	@GetMapping("/helloFromClient17")
+	public Object helloFromClient17() {
+		// Header没必要
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+		map.add("name", "posted Hahahahahahahaha-17");
+		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, null);
+
+		String url = "http://provider/postPerson2";
+		return restTemplate.postForObject(url, requestEntity, Person.class);
+	}
+
+	// 用restTemplate.postForLocation 发Post请求，得到URI 然后跳转，需要HttpServletResponse
+	@GetMapping("/helloFromClient18")
+	public void helloFromClient18(HttpServletResponse response) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("name", "Spring");
+		String url = "http://provider/postLocation";
+		URI uri = restTemplate.postForLocation(url, map, Person.class);
+		System.out.println(uri);
+		response.sendRedirect(uri.toString());
+	}
+
+	// 用restTemplate.postForEntity发Post请求
+	@GetMapping("/helloFromClient19")
+	public void helloFromClient19(HttpServletResponse response) throws Exception {
+		Person person = new Person(1, "666", null);
+		String url = "http://provider/postLocation";
+		URI uri = restTemplate.postForLocation(url, person, Person.class);
+		System.out.println(uri);
+		response.sendRedirect(uri.toString());
 	}
 }
