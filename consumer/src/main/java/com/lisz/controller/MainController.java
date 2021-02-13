@@ -273,7 +273,7 @@ public class MainController {
 	@GetMapping("/postPersonForPerson")
 	public Object postPersonForPerson() {
 		Person person = new Person(3,"zhangsan", null);
-		String url = "http://provider/postPerson3"; //provider的postPerson3这个Controller里面要接受Person，且其前面要有@RequestBody注解
+		String url = "http://provider/postPerson3"; //provider的postPerson3这个API方法里面要接受Person，且其前面要有@RequestBody注解
 		return restTemplate.postForObject(url, person, Person.class);
 	}
 
