@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 1. 接口和REST 的 URL的特点都是只知道入参和返回值，调用方无需关心具体实现
 2。RestTemplate的方式是提供方写java代码和文档，调用方根据文档再写Java：Java -> 文档 -> Java，既然都是java，那就可以省去中间的文档
 3。文档有可能跟java代码不同步了，但是接口和它的实现一定是同步的
-基于以上三点，我们可以把接口所在项目打包成公共的library，跟provider做成聚合项目，然后调用方和实现方都看得见。调用方的继承接口类脑袋顶上要有：
+基于以上三点，我们可以把接口所在项目打包（maven install）成公共的library，跟provider做成聚合项目，然后调用方和实现方都看得见。调用方的
+继承接口类脑袋顶上要有：
 @FeignClient(name = "user-provider")，以标记到底该调用那个应用。这么些是最想的，但是唯一的坏处是没办法跨语言，异构平台不行。
 在provider和consumer中将会各有一个这个接口的实现类，provider中是controller，而consumer中一般是service层的类
+https://github.com/bjmashibing/InternetArchitect/blob/master/20%20架构师三期%20SpringCloud微服务架构/SpringCloud05.md
  */
 @RequestMapping("/user") // 这里可以注释掉，只要重启Provider和Consumer，则可以屏蔽掉URL的各种变化，不用知道他是怎么变的，重启（构建）就好
 public interface UserApi {
