@@ -48,6 +48,15 @@
 			<artifactId>user-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<!-- 为了避免OpenFeign的各种奇奇怪怪的错误 -->
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-httpclient</artifactId>
+			<version>11.0</version>
+		</dependency>
+
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

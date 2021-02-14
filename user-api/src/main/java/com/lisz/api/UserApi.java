@@ -1,7 +1,7 @@
 package com.lisz.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.lisz.entity.Person;
+import org.springframework.web.bind.annotation.*;
 
 /*
 中间类：接口和Controller的混合体：interface，无方法实现,供服务提供方的Controller实现；但在类和方法上面却有@RequestMapping("/user")或
@@ -22,9 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "user-provider")，以标记到底该调用那个应用。这么些是最想的，但是唯一的坏处是没办法跨语言，异构平台不行。
 在provider和consumer中将会各有一个这个接口的实现类，provider中是controller，而consumer中一般是service层的类
 https://github.com/bjmashibing/InternetArchitect/blob/master/20%20架构师三期%20SpringCloud微服务架构/SpringCloud05.md
+这个API里的注解，比较特殊都是给Feign看的，用来组装成URL发到服务端。
+这里不写@FeignClient是因为服务提供端户籍成这个接口，其所有的方法会都带上@FeignClient的功能。接口里的注解会被实现类拿到
  */
 @RequestMapping("/user") // 这里可以注释掉，只要重启Provider和Consumer，则可以屏蔽掉URL的各种变化，不用知道他是怎么变的，重启（构建）就好
 public interface UserApi {
 	@GetMapping("/alive")
 	public String alive();
+
+	@GetMapping("/get-by-id/{id}")
+	public String getById(@PathVariable("id") Integer id);
+
+	@PostMapping("/postPerson")
+	Person postPerson(@RequestBody Person person); //Person类只写在Api这里就能被双方都看见
 }
