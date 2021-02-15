@@ -55,7 +55,12 @@
 			<artifactId>feign-httpclient</artifactId>
 			<version>11.0</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/com.netflix.hystrix/hystrix-core -->
+		<dependency>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-core</artifactId>
+			<version>1.5.18</version>
+		</dependency>
 
 	</dependencies>
 	<dependencyManagement>

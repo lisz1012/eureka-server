@@ -3,15 +3,28 @@ package com.lisz.controller;
 import com.lisz.api.UserApi;
 import com.lisz.entity.Address;
 import com.lisz.entity.Person;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class UserController implements UserApi {
+	@Value("${server.port}")
+	private int port;
+
+	private AtomicInteger count = new AtomicInteger(0);
 	//@GetMapping("/alive") // 可以注释掉，因为UserApi.alive()上面已经有一样的注解了
 	public String alive(){
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		int i = count.incrementAndGet();
+		System.out.println("Port: " + port + " 第" + i + "次调用");
 		return "okk";
 	}
 

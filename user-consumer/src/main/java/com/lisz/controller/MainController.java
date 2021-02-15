@@ -25,7 +25,7 @@ public class MainController {
 	@GetMapping("/alive")
 	public String alive(){
 		// return userConsumerService.alive();
-		System.out.println("alive2");
+		System.out.println("alive");
 		return api.alive();
 	}
 

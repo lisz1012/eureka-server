@@ -25,7 +25,10 @@ https://github.com/bjmashibing/InternetArchitect/blob/master/20%20架构师三�
 这个API里的注解，比较特殊都是给Feign看的，用来组装成URL发到服务端。
 这里不写@FeignClient是因为服务提供端户籍成这个接口，其所有的方法会都带上@FeignClient的功能。接口里的注解会被实现类拿到
  */
-@RequestMapping("/user") // 这里可以注释掉，只要重启Provider和Consumer，则可以屏蔽掉URL的各种变化，不用知道他是怎么变的，重启（构建）就好
+
+// 这里可以注释掉，只要重启Provider和Consumer，则可以屏蔽掉URL的各种变化，不用知道他是怎么变的，重启（构建）就好.
+// 但是直接用RestTemplate、Postman或者浏览器调用接口的话，就得写好/user/getMap，得顺好继承关系，拼对了URL
+@RequestMapping("/user")
 public interface UserApi {
 	@GetMapping("/alive")
 	public String alive();
