@@ -11,4 +11,13 @@ public class Person {
 	private int id;
 	private String name;
 	private Address address;
+
+	@Override
+	public String toString() {
+		return "Person{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", address=" + address +
+				'}';
+	}
 }

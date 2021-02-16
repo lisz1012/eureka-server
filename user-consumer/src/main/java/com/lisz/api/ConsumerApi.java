@@ -1,5 +1,6 @@
 package com.lisz.api;
 
+import com.lisz.factory.HystrixConsumerApiFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 // 这个类只是提供了一个让Feign介入的机会
-@FeignClient(name = "user-provider")
+@FeignClient(name = "user-provider", fallbackFactory = HystrixConsumerApiFactory.class)
 public interface ConsumerApi extends UserApi {
 	/**
 	 * 这里的getMap 和 @RequestParam("id") 是给Feign看的，必须写，否则启动的时候报错。跟上面这个 "user-provider"

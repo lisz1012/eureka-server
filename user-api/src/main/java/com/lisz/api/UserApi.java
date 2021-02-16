@@ -28,6 +28,7 @@ https://github.com/bjmashibing/InternetArchitect/blob/master/20%20架构师三�
 
 // 这里可以注释掉，只要重启Provider和Consumer，则可以屏蔽掉URL的各种变化，不用知道他是怎么变的，重启（构建）就好.
 // 但是直接用RestTemplate、Postman或者浏览器调用接口的话，就得写好/user/getMap，得顺好继承关系，拼对了URL
+// 用Hystrix实现类的话，就不能加这个@RequestMapping("/user")了。用Factory的方法没这个问题
 @RequestMapping("/user")
 public interface UserApi {
 	@GetMapping("/alive")

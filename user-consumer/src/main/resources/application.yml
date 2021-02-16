@@ -7,3 +7,19 @@ server:
 spring:
   application:
     name: user-consumer
+feign:
+  hystrix:
+    enabled: true
+# ribbon的重试机制，retry期间可以看到浏览器进度条一直不消失，显示还在load页面
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 2000
+  MaxAutoretries: 3
+  MaxAutoRetriesNextServer: 3
+  OkToRetryOnAllOperations: false
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE

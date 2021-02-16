@@ -18,13 +18,14 @@ public class UserController implements UserApi {
 	private AtomicInteger count = new AtomicInteger(0);
 	//@GetMapping("/alive") // 可以注释掉，因为UserApi.alive()上面已经有一样的注解了
 	public String alive(){
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		int i = count.incrementAndGet();
-		System.out.println("Port: " + port + " 第" + i + "次调用");
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		int i = count.incrementAndGet();
+//		System.out.println("Port: " + port + " 第" + i + "次调用");
+		int i = 1/0;
 		return "okk";
 	}
 
