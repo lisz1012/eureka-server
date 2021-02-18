@@ -3,6 +3,7 @@ package com.lisz.controller;
 import com.lisz.api.ConsumerApi;
 import com.lisz.api.UserApi;
 import com.lisz.entity.Person;
+import com.lisz.service.RestService;
 import com.lisz.service.UserConsumerService;
 import com.lisz.service.UserConsumerService2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,16 @@ public class MainController {
 
 	private ConsumerApi api;
 
+	// Hystrix降级处理RestTemplate发送的微服务请求
+	@Autowired
+	private RestService restService;
+
 	@GetMapping("/alive")
 	public String alive(){
 		// return userConsumerService.alive();
 		System.out.println("alive");
-		return api.alive();
+		//return api.alive();
+		return restService.alive();
 	}
 
 

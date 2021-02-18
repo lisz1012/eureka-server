@@ -3,6 +3,7 @@ package com.lisz.controller;
 import com.lisz.api.UserApi;
 import com.lisz.entity.Address;
 import com.lisz.entity.Person;
+import com.lisz.exception.CalculationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class UserController implements UserApi {
 	private int port;
 
 	private AtomicInteger count = new AtomicInteger(0);
-	//@GetMapping("/alive") // 可以注释掉，因为UserApi.alive()上面已经有一样的注解了
+	@GetMapping("/alive") // 可以注释掉，因为UserApi.alive()上面已经有一样的注解了
 	public String alive(){
 //		try {
 //			Thread.sleep(3000);
@@ -25,7 +26,11 @@ public class UserController implements UserApi {
 //		}
 //		int i = count.incrementAndGet();
 //		System.out.println("Port: " + port + " 第" + i + "次调用");
-		int i = 1/0;
+		try {
+			int i = 1/0;
+		} catch (Exception e) {
+			throw new CalculationException("计算时除数为零");
+		}
 		return "okk";
 	}
 
