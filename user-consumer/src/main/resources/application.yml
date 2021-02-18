@@ -17,9 +17,27 @@ ribbon:
   MaxAutoretries: 3
   MaxAutoRetriesNextServer: 3
   OkToRetryOnAllOperations: false
+# Hystrix（像个 try catch）主要做的是熔断、降级、隔离。
+# 两种资源隔离方式：线程池隔离是THREAD，信号量隔离是：SEMAPHORE (Dashboard上就不显示Threadpool了，那信号量隔离，没有用线程池)
+# SEMAPHORE是用信号量，服用Tomcat的worker线程池，每个线程适合处理计算密集型任务；而THREAD是开新的线程池，适合Hang住的、IO密集型任务。
+# 后者不会让住线程Hang住，由于多是一部网络调用，线程池自身就有可能出现各种问题。线程等待的时候是不消耗资源的，而我们的目的是压榨服务器的资源，
+# 让他尽量多消耗资源。后者整个线程池挂了，也不会影响其他的线程池，做到了隔离。Servlet3.1和3.0的唯一的区别是前者worker是非阻塞的，异步执行
+# 两类请求：远程服务调用和本地服务调用，一般不让比较耗时的远程服务调用和IO请求占用本地的worker线程，而是留给本地服务。THREAD直接干脆令开辟线程池。
+# 用信号量做隔离的时候，要求代码要足够健壮，不能把整个Tomcat worker线程池弄坏了
 hystrix:
   command:
     default:
       execution:
         isolation:
-          strategy: SEMAPHORE
+          strategy: THREAD
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#设置Hystrix隔离策略为线程池
+zuul:
+  ribbon-isolation-strategy: thread
+  #每个路由使用独立的线程池
+  thread-pool:
+    use-separate-thread-pools: true
