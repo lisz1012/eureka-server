@@ -45,6 +45,11 @@ public class HystrixConsumerApiFactory implements FallbackFactory<ConsumerApi> {
 			}
 
 			@Override
+			public String helloZuul() {
+				return "Hello, downgraded zuul";
+			}
+
+			@Override
 			public String alive() {
 				System.out.println(cause);
 				System.out.println(ToStringBuilder.reflectionToString(cause, ToStringStyle.MULTI_LINE_STYLE));

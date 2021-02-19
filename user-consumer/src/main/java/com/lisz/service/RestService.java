@@ -10,7 +10,7 @@ public class RestService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@HystrixCommand(defaultFallback = "aliveFallback")
+	@HystrixCommand(defaultFallback = "aliveFallback") // 把正经方法和fallback联系起来，一般正经方法里面是个service call
 	public String alive(){
 		String url = "http://user-provider/user/alive";
 		String result = restTemplate.getForObject(url, String.class);

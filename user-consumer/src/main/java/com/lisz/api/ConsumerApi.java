@@ -26,4 +26,6 @@ public interface ConsumerApi extends UserApi {
 	Map<Integer, String> getMap(@RequestParam Map<String, Object> map);
 	@PostMapping("/postMap") // 请求的类型取决于这里的设置
 	Map<Integer, String> postMap(@RequestBody Map<String, Object> map);
+	@GetMapping("/helloZuul")
+	String helloZuul();
 }

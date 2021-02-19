@@ -69,4 +69,9 @@ public class UserController implements UserApi {
 		System.out.println("POST");
 		return Collections.singletonMap(Integer.parseInt(map.get("id").toString()), map.get("name").toString());
 	}
+
+	@GetMapping("/helloZuul")
+	public String helloZuul(){
+		return "Hello, zuul! - " + port;
+	}
 }

@@ -68,4 +68,9 @@ public class MainController {
 		Person person = new Person(Integer.parseInt(map.get("id").toString()), map.get("name").toString(), null);
 		return api.postPerson(person);
 	}
+
+	@GetMapping("/helloZuul")
+	public String postPerson(){
+		return api.helloZuul();
+	}
 }
