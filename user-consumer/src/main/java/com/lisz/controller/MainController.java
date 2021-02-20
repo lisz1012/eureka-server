@@ -7,6 +7,7 @@ import com.lisz.service.RestService;
 import com.lisz.service.UserConsumerService;
 import com.lisz.service.UserConsumerService2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -14,6 +15,9 @@ import java.util.Map;
 
 @RestController
 public class MainController {
+	@Value("${server.port}")
+	private int port;
+
 	@Autowired
 	//private UserConsumerService userConsumerService;
 	//private UserConsumerService2 userConsumerService;
