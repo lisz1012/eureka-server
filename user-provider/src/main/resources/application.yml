@@ -7,3 +7,23 @@ server:
 spring:
   application:
     name: user-provider
+  # springboot admin配置，pom添加依赖后要加上这个，上报至某个url
+  boot:
+    admin:
+      client:
+        url: http://192.168.1.102:8080
+  zipkin:
+    # 每个微服务都向这个地址上报信息
+    base-url: http://192.168.1.102:9411
+  sleuth:
+    sampler:
+      rate: 1
+# springboot admin配置，pom添加依赖后要加上这个
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

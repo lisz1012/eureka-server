@@ -3,10 +3,23 @@ eureka:
     service-url:
       defaultZone: http://lisz:123@eureka-7900:7900/eureka/,http://lisz:123$eureka-7901:7901/eureka/
 server:
-  port: 81
+  port: 83
 spring:
   application:
     name: user-consumer
+  # 每个微服务都向这个地址上报信息
+  zipkin:
+    base-url: http://192.168.1.102:9411
+  # zipkin也需要这个
+  sleuth:
+    sampler:
+      rate: 1
+  # springboot admin配置，pom添加依赖后要加上这个，上报至某个url
+  boot:
+    admin:
+      client:
+        url: http://192.168.1.102:8080
+
 feign:
   hystrix:
     enabled: true
@@ -30,11 +43,15 @@ hystrix:
       execution:
         isolation:
           strategy: THREAD
+# springboot admin配置，pom添加依赖后要加上这个
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
 #设置Hystrix隔离策略为线程池
 zuul:
   ribbon-isolation-strategy: thread

@@ -19,3 +19,18 @@ server:
 spring:
   application:
     name: Eureka
+  # springboot admin配置，pom添加依赖后要加上这个,Eureka有密码的时候则报401错误 Actuator的UI显示
+  boot:
+    admin:
+      client:
+        url: http://192.168.1.102:8080
+
+# springboot admin配置，pom添加依赖后要加上这个，Eureka有密码的时候则报401错误 Actuator的UI显示
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

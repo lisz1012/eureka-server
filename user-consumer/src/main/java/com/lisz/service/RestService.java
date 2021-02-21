@@ -12,7 +12,7 @@ public class RestService {
 
 	@HystrixCommand(defaultFallback = "aliveFallback") // 把正经方法和fallback联系起来，一般正经方法里面是个service call
 	public String alive(){
-		String url = "http://user-provider/user/alive";
+		String url = "http://user-provider/user/alive"; // 这个/user要写上，因为user-api中的UserApi脑袋上有这么一句：@RequestMapping("/user")
 		String result = restTemplate.getForObject(url, String.class);
 		return result;
 	}

@@ -17,3 +17,17 @@ server:
 spring:
   application:
     name: Eureka
+  boot:
+    admin:
+      client:
+        url: http://192.168.1.102:8080
+
+# springboot admin配置，pom添加依赖后要加上这个
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

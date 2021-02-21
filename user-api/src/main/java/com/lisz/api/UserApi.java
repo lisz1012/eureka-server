@@ -39,4 +39,7 @@ public interface UserApi {
 
 	@PostMapping("/postPerson")
 	Person postPerson(@RequestBody Person person); //Person类只写在Api这里就能被双方都看见
+
+//	@GetMapping("/testZipkin")
+//	public String testZipkin();
 }

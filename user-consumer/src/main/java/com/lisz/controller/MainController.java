@@ -34,7 +34,7 @@ public class MainController {
 	@GetMapping("/alive")
 	public String alive(){
 		// return userConsumerService.alive();
-		System.out.println("alive");
+		System.out.println("Consumer alive， " + port);
 		//return api.alive();
 		return restService.alive();
 	}
@@ -75,6 +75,6 @@ public class MainController {
 
 	@GetMapping("/helloZuul")
 	public String postPerson(){
-		return api.helloZuul();
+		return "Consumer alive， " + port + " " + api.helloZuul();
 	}
 }
