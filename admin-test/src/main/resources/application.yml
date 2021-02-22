@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: admin-test
+  security:
+    user:
+      name: root
+      password: root
+  # 邮件设置 l20765183@gmail.com
+  mail:
+    host: smtp.gmail.com
+    username: XXX@gmail.com
+    password: !@#$%^
+    properties:
+      mail:
+        smpt:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    port: 587
+  boot:
+    admin:
+      notify:
+        mail:
+          to: XXX@gmail.com
+          from: XXX@gmail.com
