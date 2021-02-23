@@ -8,15 +8,20 @@ import com.lisz.service.UserConsumerService;
 import com.lisz.service.UserConsumerService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
 
 @RestController
+@RefreshScope
 public class MainController {
 	@Value("${server.port}")
 	private int port;
+
+	@Value("${myconfig}")
+	private String myconfig;
 
 	@Autowired
 	//private UserConsumerService userConsumerService;
@@ -75,6 +80,6 @@ public class MainController {
 
 	@GetMapping("/helloZuul")
 	public String postPerson(){
-		return "Consumer alive， " + port + " " + api.helloZuul();
+		return "Consumer alive， " + port + " " + api.helloZuul() + " my config is: " + myconfig;
 	}
 }

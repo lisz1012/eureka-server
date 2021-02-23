@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/lisz1012/SpringCloud-Config-Center.git
+      label: master
+  application:
+    name: config-admin
+eureka:
+  client:
+    service-url:
+      defaultZone: http://lisz:123@eureka-7900:7900/eureka/,http://lisz:123@eureka-7901:7901/eureka/
+server:
+  port: 9999

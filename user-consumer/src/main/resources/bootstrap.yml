@@ -1,0 +1,21 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://lisz:123@eureka-7900:7900/eureka/,http://lisz:123$eureka-7901:7901/eureka/
+spring:
+  cloud:
+    config:
+      # 查找配置文件有两种方式：
+      # 1. 直接URL/URI方式查找
+      # uri: http://192.168.1.102:9999/
+      # 2. 通过注册中心查找
+      # 通过注册中心找, 这样config-admin服务可以多起几个实例做高可用，用这个的时候，把上面的uri注释掉
+      discovery:
+        service-id: config-admin
+        enabled: true
+      # 哪个配置文件
+      profile: dev
+      # git上的哪个分支
+      label: test
+      # 配置中心还有个配置：
+      # myconfig: test_abc_v1 在想用的地方做一下@Value注入就好
