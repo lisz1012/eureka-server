@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -143,7 +144,7 @@ public class MainController {
 
 	@GetMapping("/helloFromClient4")
 	public String helloFromClient4(){
-		String baseUrl = "http://192.168.1.102:82";
+		String baseUrl = "http://192.168.1.102:82";  // 拦截器LoggingClientHttpRequestInterceptor会报错，他不是拿着"provider"，而是192.168.1.102作为serviceId
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
 		factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
 		restTemplate.setUriTemplateHandler(factory);
