@@ -20,6 +20,8 @@ public class MainController {
 	@Value("${server.port}")
 	private int port;
 
+	// myconfig: "abc_v1" 在远程的github中，通过bootstrap.yml文件的配置，会从远程（某个分支的SpringCloud-Config-Center/user-consumer.yml）取得，
+	// 然后注入到这里
 	@Value("${myconfig}")
 	private String myconfig;
 
